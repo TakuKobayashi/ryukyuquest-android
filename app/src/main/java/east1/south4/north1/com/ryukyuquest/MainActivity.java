@@ -10,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -21,8 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(ExtraLayout.getInstance(ExtraLayout.class).getParenetView(R.layout.activity_main));
+        ImageView image = (ImageView) findViewById(R.id.topImageView);
+        image.setImageResource(R.mipmap.start_top);
         ButterKnife.bind(this);
         requestPermission();
     }
@@ -41,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(permissions.toArray(new String[0]), REQUEST_CODE);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ApplicationHelper.releaseImageView((ImageView) findViewById(R.id.topImageView));
     }
 
     @OnClick(R.id.startButton)

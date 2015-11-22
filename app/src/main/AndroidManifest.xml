@@ -3,6 +3,7 @@
     package="east1.south4.north1.com.ryukyuquest" >
 
     <application
+        android:name=".RyukyuQuestApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

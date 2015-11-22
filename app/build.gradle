@@ -29,4 +29,5 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.+'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.okhttp:okhttp-apache:2.3.0'
+    compile 'com.google.code.gson:gson:2.4'
 }

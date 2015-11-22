@@ -9,6 +9,9 @@ public class RyukyuQuestApplication extends Application {
 		ExtraLayout.getInstance(ExtraLayout.class).init(this);
 		ExtraLayout.getInstance(ExtraLayout.class).setBaseDisplaySize(1080, 1920);
 		ExtraLayout.getInstance(ExtraLayout.class).setDisplayPolicy(ExtraLayout.DISPLAY_POLICY_EXACT_FIT);
+		LocationLoader locationLoader = LocationLoader.getInstance(LocationLoader.class);
+		locationLoader.init(this);
+		locationLoader.startRequestLocation();
 	}
 
 	@Override

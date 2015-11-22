@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         image.setImageResource(R.mipmap.start_top);
         ButterKnife.bind(this);
         requestPermission();
+        ImageButton startButton = (ImageButton) findViewById(R.id.startButton);
+        startButton.setImageResource(R.mipmap.start_button);
     }
 
     private void requestPermission(){
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ApplicationHelper.releaseImageView((ImageView) findViewById(R.id.topImageView));
+        ApplicationHelper.releaseImageView((ImageButton) findViewById(R.id.startButton));
     }
 
     @OnClick(R.id.startButton)

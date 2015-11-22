@@ -1,5 +1,6 @@
 package east1.south4.north1.com.ryukyuquest;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -59,11 +60,18 @@ public class MapActivity extends AppCompatActivity {
                         mBg.start();
                         SharedPreferences sp = Preferences.getCommonPreferences(MapActivity.this);
                         webview.loadUrl(Config.ROOT_URL + "battle/encount?mst_monster_id=1&authToken=" + sp.getString("authToken", ""));
+                        recoverActivity();
                     }
                 });
             }
         };
         timer.schedule(task, GotoNextTime);
+    }
+
+    private void recoverActivity(){
+        Intent intent = new Intent(this, RecoverActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

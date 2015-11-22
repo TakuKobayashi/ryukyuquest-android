@@ -58,8 +58,6 @@ public class MapActivity extends AppCompatActivity {
                         mBg = MediaPlayer.create(MapActivity.this, R.raw.lastboss);
                         mBg.setLooping(true);
                         mBg.start();
-                        SharedPreferences sp = Preferences.getCommonPreferences(MapActivity.this);
-                        webview.loadUrl(Config.ROOT_URL + "battle/encount?mst_monster_id=1&authToken=" + sp.getString("authToken", ""));
                         recoverActivity();
                     }
                 });
@@ -69,7 +67,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void recoverActivity(){
-        Intent intent = new Intent(this, RecoverActivity.class);
+        Intent intent = new Intent(this, BattleActivity.class);
         startActivity(intent);
         finish();
     }

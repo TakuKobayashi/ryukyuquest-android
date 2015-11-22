@@ -42,46 +42,6 @@ public class ApplicationHelper {
 		webview = null;
 	}
 
-	public static int getCameraDisplayOrientation(Activity act,int nCameraID){
-		if(Build.VERSION.SDK_INT >= 9){
-			Camera.CameraInfo info = new Camera.CameraInfo();
-			Camera.getCameraInfo(nCameraID, info);
-			int rotation = act.getWindowManager().getDefaultDisplay().getRotation();
-			int degrees = 0;
-			switch (rotation) {
-				//portate:縦向き
-				case Surface.ROTATION_0: degrees = 0; break;
-				//landscape:横向き
-				case Surface.ROTATION_90: degrees = 90; break;
-				case Surface.ROTATION_180: degrees = 180; break;
-				case Surface.ROTATION_270: degrees = 270; break;
-			}
-			int result;
-			//Camera.CameraInfo.CAMERA_FACING_FRONT:アウトカメラ
-			//Camera.CameraInfo.CAMERA_FACING_BACK:インカメラ
-
-			Log.d(Config.DEBUG_KEY, "d:" + degrees + " o:" + info.orientation + " f:" + info.facing);
-			if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-				result = (info.orientation + degrees) % 360;
-				result = (360 - result) % 360;  // compensate the mirror
-			} else {  // back-facing
-				result = (info.orientation - degrees + 360) % 360;
-			}
-			return result;
-		}
-		return 90;
-	}
-
-	public static boolean checkCameraHardware(Context context) {
-		if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-			// this device has a camera
-			return true;
-		} else {
-			// no camera on this device
-			return false;
-		}
-	}
-
 	public static String makeUrlParams(Bundle params){
 		Set<String> keys = params.keySet();
 		ArrayList<String> paramList = new ArrayList<String>();
@@ -143,25 +103,5 @@ public class ApplicationHelper {
 		Matrix matrix = new Matrix();
 		matrix.postRotate(orientation);
 		return Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
-	}
-
-	public static Camera.Size getFitNearlySize(List<Camera.Size> sizeList, int threathold, int orientation){
-		int index = 0;
-		int sep = threathold * threathold;
-		int diff = sep;
-		for(int i = 0;i < sizeList.size();++i) {
-			Camera.Size size = sizeList.get(i);
-			if(size.width > threathold || size.height > threathold) continue;;
-			if ((orientation % 180 == 90)) {
-				if(size.height > size.width) continue;
-			}else{
-				if(size.height < size.width) continue;
-			}
-			if(diff >= (sep - (size.width * size.height))) {
-				diff = sep - (size.width * size.height);
-				index = i;
-			}
-		}
-		return sizeList.get(index);
 	}
 }

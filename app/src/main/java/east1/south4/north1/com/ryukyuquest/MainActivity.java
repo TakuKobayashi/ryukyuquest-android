@@ -2,6 +2,7 @@ package east1.south4.north1.com.ryukyuquest;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +35,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
     private static int REQUEST_CODE = 1;
+    private MediaPlayer mBg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         requestPermission();
         ImageButton startButton = (ImageButton) findViewById(R.id.startButton);
         startButton.setImageResource(R.mipmap.start_button);
+        mBg = MediaPlayer.create(this, R.raw.opening);
+        mBg.setLooping(true);
+        mBg.start();
     }
 
     private void requestPermission(){
@@ -70,10 +75,14 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         ApplicationHelper.releaseImageView((ImageView) findViewById(R.id.topImageView));
         ApplicationHelper.releaseImageView((ImageButton) findViewById(R.id.startButton));
+        mBg.pause();
+        mBg.release();
     }
 
     @OnClick(R.id.startButton)
     public void onClickStart(View v){
+        MediaPlayer mp = MediaPlayer.create(this, R.raw.tap);
+        mp.start();
         SharedPreferences sp = Preferences.getCommonPreferences(this);
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("authToken", sp.getString("authToken", ""));
@@ -84,11 +93,14 @@ public class MainActivity extends AppCompatActivity {
                 User user = gson.fromJson(response, User.class);
                 Preferences.saveCommonParam(MainActivity.this, "authToken", user.authToken);
                 Log.d(Config.DEBUG_KEY, "au:" + user.authToken);
+                mBg.pause();
                 Intent intent = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
+
 
     private void httpRequest(int method, String url , final Map<String, String> params, Response.Listener response){
         RequestQueue queue = Volley.newRequestQueue(this);

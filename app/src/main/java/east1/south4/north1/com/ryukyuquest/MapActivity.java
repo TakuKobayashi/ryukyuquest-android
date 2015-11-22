@@ -1,5 +1,6 @@
 package east1.south4.north1.com.ryukyuquest;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 
 public class MapActivity extends AppCompatActivity {
+    private MediaPlayer mBg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +25,15 @@ public class MapActivity extends AppCompatActivity {
         WebView webview = (WebView) findViewById(R.id.mapWebView);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.loadUrl(Config.ROOT_URL + "map");
-
+        mBg = MediaPlayer.create(this, R.raw.field);
+        mBg.setLooping(true);
+        mBg.start();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ApplicationHelper.releaseWebView((WebView) findViewById(R.id.mapWebView));
+        mBg.release();
     }
 }
